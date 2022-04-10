@@ -1,17 +1,21 @@
-﻿// Learn more about F# at http://fsharp.org
-
-open System
+﻿open System
 open System.IO
 open Commons.Music.Midi
 
-let midi_reader path =
+let midi_reader (path : string) : MidiTrack =
     let access = MidiAccessManager.Default
-    let midi = MidiMusic.Read(System.IO.File.OpenRead(path))
+    let midi = MidiMusic.Read(File.OpenRead(path))
     let tracks = midi.Tracks
     
-    printf "トラックを選択してください。"
-    for i in 0 .. tracks.Count do
-        printf $"[{i}]"
+    printf "対象のトラックを整数値で選択してください。\n"
+    for i in 0 .. tracks.Count - 1 do
+        printf $"[{i}]\n"
+
+    let track_num = Console.ReadLine() |> int
+    tracks[track_num]
+
+let midi_parser (midi : MidiTrack) : string =
+    "hoge"
 
 [<EntryPoint>]
 let main argv =
@@ -23,5 +27,11 @@ let main argv =
 ┃┃┃┃┃┣┫┣┳┛┗┛┣┫┣┫┃┗━┫┗━┛┃┗━┛┃┗━┛┃┃┃┗┫┗━━┓
 ┗┛┗┛┗┻━━┻━━━┻━━┻━━━┻━━━┻━━━┻━━━┻┛┗━┻━━━┛  by Nodoka
         "
-    printf "\n>> midiファイルをここに落とすか、midiファイルへのフルパスを入力してください。"
+    printf "\n[Midi2Score] midiファイルをここに落とすか、midiファイルへのフルパスを入力してください。\n>> "
+
+    let file = Console.ReadLine()
+    Console.WriteLine(file)
+    let midi = midi_reader file
+    midi_parser midi |> ignore
+    Console.ReadKey() |> ignore
     0 // return an integer exit code
