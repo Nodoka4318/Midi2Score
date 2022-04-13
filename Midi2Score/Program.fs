@@ -1,4 +1,5 @@
 ﻿open System
+open System.Collections.Generic;
 open System.IO
 open Commons.Music.Midi
 
@@ -14,8 +15,12 @@ let midi_reader (path : string) : MidiTrack =
     let track_num = Console.ReadLine() |> int
     tracks[track_num]
 
-let midi_parser (midi : MidiTrack) : string =
-    "hoge"
+let midi_parser (midi : MidiTrack) : string[] =
+    let msgs = midi.Messages
+    for m in msgs do
+        Console.WriteLine(m.Event.Value)
+
+    [|"hoge"|]
 
 [<EntryPoint>]
 let main argv =
